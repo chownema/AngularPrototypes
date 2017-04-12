@@ -1,6 +1,7 @@
 /**
  * dictionary.class.js
- * @description A Dictionary collection class
+ * @description A Dictionary collection class with helper functions 
+ *              used to interact with the dictionary collection.
  * @author Miguel Saavedra
  */
 (function () {
@@ -18,12 +19,22 @@
              */
             var Dictionary = function (oDictionary) {
                 var dict = this;
-                
+
                 var properties = {
-                    data : oDictionary,
-                    hasNext : false,
-                    hasPrev : false
+                    data: oDictionary,
+                    hasNext: false,
+                    hasPrev: false
                 };
+
+                // Internal command argument 
+                const ARGS = {
+                    concat : 0,
+                    match_one : 1
+                }
+
+                /*********************
+                 * Internal Functions
+                 *********************/
 
                 /**
                  * @function _searchDictionary
@@ -37,70 +48,61 @@
                  */
                 function _searchDictionary(cb, args) {
                     var result = null;
+                    var exit = false;
 
                     if (cb === null) {
-                        throw 'Need to Specify Callback Function';    
+                        throw 'Need to Specify Callback Function';
                     }
 
                     if (properties.data != null) {
                         keys = Object.keys(properties.data);
                         // Iterate dictionary data till find key
                         for (i = 0; i < keys.length; i++) {
-                            // Give current element, Elements List, index
-                            result = cb(keys[i], keys, i);
-                            // if result is found
-                            if (result != null)
+                            // Give current element, Elements List, index to CB
+                            switch (args) {
+                                case ARGS.concat:
+                                    result = cb(keys[i], keys, i) + result;
+                                    break;
+
+                                case ARGS.match_one:
+                                    result = cb(keys[i], keys, i);
+                                    if (result != null)
+                                        exit = true;
+                            }
+
+                            // Exit Boolean used when search is over
+                            if (exit)
                                 break;
                         }
                     }
                     return result;
                 }
+                
+                
 
-                // /**
-                //  * @function getKeyByValue
-                //  * @description Function Desc
-                //  * @return key associated with the value in the dictionary
-                //  *         collection, if not found then return null
-                //  */
-                // dict.getKeyByValue = function (value) {
-                //     // get Keys
-                //     var keys = [];
-                //     var returnKey = null;
-                //     if (properties.data != null) {
-                //         keys = Object.keys(properties.data);
-                //         // Iterate till find key
-                //         for (i = 0; i > keys.length; i++) {
-                //             // If found set returnKey and exit loop
-                //             if(properties.data[keys[i]]) {
-                //                 returnKey = properties.data[keys[i]];
-                //                 break;
-                //             } 
-                //         }
-                //     }
-                //     return returnKey;
-                // };
+                /*********************
+                 * External Functions
+                 *********************/
 
                 /**
                  * @function getKeyByValue
-                 * @description Function Desc
+                 * @description gets a key by the value within the dictionary
+                 *              
                  * @return key associated with the value in the dictionary
                  *         collection, if not found then return null
                  */
                 dict.getKeyByValue = function (value) {
-                    // get Keys
                     var keys = [];
-                    // var returnKey = null;
-                    // iterate through dict
-                    var returnKey = _searchDictionary(
-                        function (currentItem, Items, index) {
-                            // If found set returnKey and exit loop
-                            if(properties.data[currentItem]) {
-                                // return it to the result
-                                return properties.data[currentItem];
-                            }
-                        },
-                        null
-                    );
+                    var args = ARGS.match_one;
+                    var cb = function (currentItem, Items, index) { 
+                        // If found set returnKey and exit loop
+                        if (properties.data[currentItem]) {
+                            // return it to the result
+                            return properties.data[currentItem];
+                        }
+                    };
+                    // Get return key
+                    var returnKey = _searchDictionary(cb, args);
                     return returnKey;
                 };
 
@@ -109,7 +111,7 @@
                  * @description Function Desc
                  */
                 dict.getKeys = function () {
-                    // do something useful
+                    return Object.keys(properties.data);
                 };
 
                 /**
@@ -117,7 +119,9 @@
                  * @description Function Desc
                  */
                 dict.getValues = function () {
-                    // do something useful
+                    var values = [];
+                    var args = ARGS.concat;
+                    return values;
                 };
 
                 /**

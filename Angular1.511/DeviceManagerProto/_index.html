@@ -14,15 +14,37 @@ test angular device manager
                         // Run Dictionary Tests here
                         var dictionary = new Dictionary(
                             {
-                                'element1' : 1,
+                                element1 : 1,
                                 element2 : 2,
                                 element3 : 3,
                             }
                         );
-                        
-                        var resultKey = dictionary
-                            .getKeyByValue('element1');
-                        console.log(resultKey);
+
+                        function testDictionary(dict) {
+                            // Display Dict
+                            console.log('Test Dict Contents ::');
+                            console.log(dict);
+                            
+                            // Get Key by value
+                            var resultKey = dict.getKeyByValue('element1');
+                            console.log('Get Key by value (element1) :: ' + resultKey);
+
+                            // Get List of Keys of dict
+                            var keys = dict.getKeys();
+                            console.log('Get Keys :: ');
+                            console.log(keys);
+
+                            // Get List of Values of dict
+                            var values = dict.getValues();
+                            console.log('Get Values :: ');
+                            console.log(values);
+                        }
+
+
+
+
+
+                        testDictionary(dictionary);                        
                     }
                 ]);
     
