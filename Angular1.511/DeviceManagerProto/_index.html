@@ -1,27 +1,40 @@
 test angular device manager
 <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.js'></script>
-<!--include Services-->
-<script src='initialisation/browser-config.service.js'></script>
-<script src='class-build-helpers/immute.service.js'></script>
-
-
-<!--include objects-->
-<script src='device/device.class.js'></script>
-
+<div ng-app='main' ng-controller="testCtrl"></div>
 <script>
     // Init angular modules here
-    angular.module('system.classHelpers', []);
-    angular.module('system.initialization', []);
-    angular.module('system.device', ['system.initialization']);
-
+    angular.module('system.build.classes', []);
+    
+    angular.module('main', [
+        'system.build.classes'
+        ])
+        
+        .controller('testCtrl', [
+                    'Dictionary', 
+                    function(Dictionary) {
+                        // Diff as per browser
+                        var dictionary = new Dictionary(
+                            {
+                                'element1' : 1,
+                                element2 : 2,
+                                element3 : 3,
+                            }
+                        );
+                        
+                        var resultKey = dictionary
+                            .getKeyByValue('element1');
+                        console.log(resultKey);
+                    }
+                ]);
+    
+    // angular.module('system.initialization', []);
+    // angular.module('system.device', ['system.initialization']);
     // Playground
-    (function () {
-
-        // Diff as per browser
-        function init() {
-
-        }
-
-    })();
-
 </script>
+
+<!--include Services-->
+<!--<script src='initialisation/browser-config.service.js'></script>-->
+<!--<script src='class-build-helpers/immute.service.js'></script>-->
+<script src='class-build-helpers/dictionary.class.js'></script>
+<!--include objects-->
+<!--<script src='device/device.class.js'></script>-->
