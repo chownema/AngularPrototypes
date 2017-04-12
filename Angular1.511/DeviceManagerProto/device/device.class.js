@@ -11,7 +11,7 @@
          * @description Creates a singleton service instance of 
          *              Device object.
          */
-        .factory('Device', function () {
+        .factory('Device', ['Dictionary', function (Dictionary) {
 
             // Const Enum dictionary holding device types
             const DEVICE_TYPE = {
@@ -21,30 +21,40 @@
 
             // Const Enum dictionary holding the device state
             // Implement Stack state algorithm 
-            const DEVICE_STATE = {
-                Blocked: -1,
-                Uninitialized: 0,
-                Initializing: 1,
-                Ready: 2,
-                Active: 3,
-                Paused: 4
-            };
+            // const DEVICE_STATE = {
+            //     Blocked: -1,
+            //     Uninitialized: 0,
+            //     Initializing: 1,
+            //     Ready: 2,
+            //     Active: 3,
+            //     Paused: 4
+            // };
+            const DEVICE_STATE = new Dictionary(
+                {
+                    Blocked: -1,
+                    Uninitialized: 0,
+                    Initializing: 1,
+                    Ready: 2,
+                    Active: 3,
+                    Paused: 4
+                }
+            );
 
             // Const Enum dictionary holding the device progress commands
             // Used to implement commands for the stack
             const PROGRESS_COMMANDS = {
-                Blocked : -1,
-                Progress : 0,
-                Regress : 1
+                Blocked: -1,
+                Progress: 0,
+                Regress: 1
             };
 
             // Const Enum dictionary holding the device blocked states
             // Device can have one or more of these states active in one istance
             const BLOCKED_STATES = {
-                Firewall: false,
+                Firewall: false, // case 1554
                 InOtherAppUse: false,
                 PermissionsNotGiven: false,
-                PermissionDenied: false
+                PermissionDenied: false // case 1500
             };
 
             /**
@@ -66,7 +76,7 @@
                 
                 // Init nonConst properties of the device object
                 var properties = {
-                    state: DEVICE_STATE.Uninitialized,
+                    state: DEVICE_STATE.getValue('Uninitialized'),
                     blockedStates: []
                 };
 
@@ -85,15 +95,23 @@
                     switch (ProgressCmd) {
                         case PROGRESS_COMMANDS.Progress:
                             // Check if can progress
-                            if(properties.state > )
+                            if(properties.state < DEVICE_STATE.getValue('Paused'))
+                                // Iterate to the next available state
+                                properties.state = DEVICE_STATE.getKeyByValue(properties.state);
                             break;
                         
                         case PROGRESS_COMMANDS.Regress:
                             // Check if can regress
+                            if(properties.state > DEVICE_STATE.getValue('Uninitialized'))
+                                // Iterate to the next available state
+                                properties.state = DEVICE_STATE.getKeyByValue(properties.state);
                             break;
                         
                         case PROGRESS_COMMANDS.Blocked:
                             // Check if can be blocked
+                            if(properties.state !== DEVICE_STATE.getValue('Blocked'))
+                                // Move to blocked state
+                                properties.state = DEVICE_STATE.getValue('Blocked');
                             break;
                         
                     }
@@ -109,9 +127,9 @@
 
                 // Return itself
                 return self;
-            }
+            };
 
             // Return object
             return Device;
-        });
+        }]);
 })();

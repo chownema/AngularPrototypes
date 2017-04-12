@@ -5,7 +5,7 @@
  * @author Miguel Saavedra
  */
 (function () {
-    angular.module('system.build.classes')
+    angular.module('system.classes')
         /** 
          * Dictionary
          * @description A Dictionary collection class
@@ -135,6 +135,17 @@
                     values = _searchDictionary(cb, args);
                     return values;
                 };
+
+
+                /**
+                 * @function getValue
+                 * @param {string} key
+                 * @return {*} value 
+                 */
+                dict.getValue = function (key) {
+                    return properties.data[key];
+                };
+
                 return dict;
             };
 

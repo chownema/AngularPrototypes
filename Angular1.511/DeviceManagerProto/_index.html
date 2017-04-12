@@ -3,9 +3,11 @@ test angular device manager
 <div ng-app='testMain' ng-controller="testDictionaryCtrl"></div>
 <script>
     // Init angular modules here
-    angular.module('system.build.classes', []);
+    angular.module('system.classes', []);
+    angular.module('system.device', ['system.classes']);
     angular.module('testMain', [
-        'system.build.classes'
+        'system.classes',
+        'system.device'
         ])
         
         .controller('testDictionaryCtrl', [
@@ -40,16 +42,30 @@ test angular device manager
                             console.log(values);
                         }
 
-
-
-
-
                         testDictionary(dictionary);                        
+                    }
+                ])
+
+        .controller('testDeviceCtrl', [
+                    'Device', 
+                    function(Device) {
+                        // Run Device Tests here
+                        var testData = {
+                            "deviceId": "d663aae21093c8427b252d889f185755d60477091ef848ebc5ad04ddb70ae9cb",
+                            "label": "Microphone (HD Webcam C270)",
+                            "kind": "audioInput"
+                        };
+                        var device = new Device(testData.deviceId, testData.label, testData.kind);
+
+                        function testDevice(dev) {
+
+                        }
+
+                        testDevice(device);                        
                     }
                 ]);
     
     // angular.module('system.initialization', []);
-    // angular.module('system.device', ['system.initialization']);
     // Playground
 </script>
 
@@ -58,4 +74,4 @@ test angular device manager
 <!--<script src='class-build-helpers/immute.service.js'></script>-->
 <script src='class-build-helpers/dictionary.class.js'></script>
 <!--include objects-->
-<!--<script src='device/device.class.js'></script>-->
+<script src='device/device.class.js'></script>
