@@ -23,7 +23,8 @@
                 var properties = {
                     data: oDictionary,
                     hasNext: false,
-                    hasPrev: false
+                    hasPrev: false,
+                    iterIndex : 0
                 };
 
                 // Internal command argument 
@@ -109,14 +110,13 @@
                             return properties.data[currentItem];
                         }
                     };
-                    // Get return key
                     var returnKey = _searchDictionary(cb, args);
                     return returnKey;
                 };
 
                 /**
                  * @function getKeys
-                 * @description Function Desc
+                 * @return {List} Keys
                  */
                 dict.getKeys = function () {
                     return Object.keys(properties.data);
@@ -124,37 +124,17 @@
 
                 /**
                  * @function getValues
-                 * @description Function Desc
+                 * @return {List} values 
                  */
                 dict.getValues = function () {
                     var values = [];
                     var args = ARGS.concat;
                     var cb = function (currentItem) {
                         return properties.data[currentItem];
-                    }
-                    // Get values
+                    };
                     values = _searchDictionary(cb, args);
                     return values;
                 };
-
-                /**
-                 * @function iterate
-                 * @description Function Desc
-                 */
-                dict.iterate = function () {
-                    // do something useful
-                };
-
-                /**
-                 * @function reverse
-                 * @description Function Desc
-                 */
-                dict.reverse = function () {
-                    // do something useful
-                };
-
-
-
                 return dict;
             };
 
