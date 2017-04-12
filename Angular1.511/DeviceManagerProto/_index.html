@@ -1,18 +1,17 @@
 test angular device manager
 <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.js'></script>
-<div ng-app='main' ng-controller="testCtrl"></div>
+<div ng-app='testMain' ng-controller="testDictionaryCtrl"></div>
 <script>
     // Init angular modules here
     angular.module('system.build.classes', []);
-    
-    angular.module('main', [
+    angular.module('testMain', [
         'system.build.classes'
         ])
         
-        .controller('testCtrl', [
+        .controller('testDictionaryCtrl', [
                     'Dictionary', 
                     function(Dictionary) {
-                        // Diff as per browser
+                        // Run Dictionary Tests here
                         var dictionary = new Dictionary(
                             {
                                 'element1' : 1,
