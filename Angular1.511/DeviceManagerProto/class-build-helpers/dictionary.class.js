@@ -48,6 +48,7 @@
                  */
                 function _searchDictionary(cb, args) {
                     var result = null;
+                    var resultList = [];
                     var exit = false;
 
                     if (cb === null) {
@@ -61,7 +62,7 @@
                             // Give current element, Elements List, index to CB
                             switch (args) {
                                 case ARGS.concat:
-                                    result = cb(keys[i], keys, i) + result;
+                                    resultList.push(cb(keys[i], keys, i));
                                     break;
 
                                 case ARGS.match_one:
@@ -75,7 +76,14 @@
                                 break;
                         }
                     }
-                    return result;
+
+                    // Choose what to return
+                    if (args === ARGS.match_one)
+                        return result;
+                    else if (args === ARGS.concat)
+                        return resultList;
+
+                    return null;
                 }
                 
                 
@@ -121,6 +129,11 @@
                 dict.getValues = function () {
                     var values = [];
                     var args = ARGS.concat;
+                    var cb = function (currentItem) {
+                        return properties.data[currentItem];
+                    }
+                    // Get values
+                    values = _searchDictionary(cb, args);
                     return values;
                 };
 
