@@ -26,7 +26,16 @@
                 Uninitialized: 0,
                 Initializing: 1,
                 Ready: 2,
-                InAppUse: 3
+                Active: 3,
+                Paused: 4
+            };
+
+            // Const Enum dictionary holding the device progress commands
+            // Used to implement commands for the stack
+            const PROGRESS_COMMANDS = {
+                Blocked : -1,
+                Progress : 0,
+                Regress : 1
             };
 
             // Const Enum dictionary holding the device blocked states
@@ -48,19 +57,55 @@
             var Device = function (dID, dLabel, dKind) {
                 var self = this;
 
-                // Init properties of the device object
-                var properties = {
+                // Init const properties of the device object
+                const cProperties = {
                     deviceId: dID,
                     label: dLabel,
-                    kind: dKind,
+                    kind: dKind
+                };
+                
+                // Init nonConst properties of the device object
+                var properties = {
                     state: DEVICE_STATE.Uninitialized,
                     blockedStates: []
                 };
 
+                /**
+                 * @function    shiftDeviceState
+                 * @description Implements a state sequence where all states can 
+                 *              go to the blocked state but cannot regress (i.e. 
+                 *              uninit !<- init) directly. The only states that can 
+                 *              progress and regress directly between each other is 
+                 *              the Active <-> Pause states.
+                 * @param       {PROGRESS_COMMANDS} ProgressCmd indicates how to progress
+                 *              the devices state
+                 */
+                self.shiftDeviceState = function(ProgressCmd) {
+                    // Check what progress commmand is given
+                    switch (ProgressCmd) {
+                        case PROGRESS_COMMANDS.Progress:
+                            // Check if can progress
+                            if(properties.state > )
+                            break;
+                        
+                        case PROGRESS_COMMANDS.Regress:
+                            // Check if can regress
+                            break;
+                        
+                        case PROGRESS_COMMANDS.Blocked:
+                            // Check if can be blocked
+                            break;
+                        
+                    }
+                }
+
                 // Getter functions for the device object
-                self.getDeviceKind = function () { return properties.kind; };
-                self.getDeviceLabel = function () { return properties.label; };
-                self.getDeviceID = function () { return properties.ID; };
+                self.getDeviceKind = function () { return cProperties.kind; };
+                self.getDeviceLabel = function () { return cProperties.label; };
+                self.getDeviceID = function () { return cProperties.ID; };
+                self.getBlockedStates = function () { return properties.blockedStates; };
+                self.getDeviceState = function () { return properties.state; };
+                self.isDeviceBlocked = function () { return properties.blockedStates.length > 0 ? true : false; };
 
                 // Return itself
                 return self;
@@ -68,7 +113,5 @@
 
             // Return object
             return Device;
-
-
         });
 })();
