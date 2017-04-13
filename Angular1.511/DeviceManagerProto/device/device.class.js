@@ -29,7 +29,7 @@
             //     Active: 3,
             //     Paused: 4
             // };
-            
+
             const DEVICE_STATE = new Dictionary(
                 {
                     Blocked: -1,
@@ -122,7 +122,7 @@
                 self.getDeviceLabel = function () { return cProperties.label; };
                 self.getDeviceID = function () { return cProperties.ID; };
                 self.getBlockedStates = function () { return properties.blockedStates; };
-                self.getDeviceState = function () { return properties.state; };
+                self.getDeviceState = function () { return DEVICE_STATE.getKeyByValue(1); };
                 self.isDeviceBlocked = function () { return properties.blockedStates.length > 0 ? true : false; };
 
                 // Return itself

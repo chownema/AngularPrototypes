@@ -105,9 +105,9 @@
                     var args = ARGS.match_one;
                     var cb = function (currentItem, Items, index) { 
                         // If found set returnKey and exit loop
-                        if (properties.data[currentItem]) {
+                        if (properties.data[currentItem] == value) {
                             // return it to the result
-                            return properties.data[currentItem];
+                            return currentItem;
                         }
                     };
                     var returnKey = _searchDictionary(cb, args);

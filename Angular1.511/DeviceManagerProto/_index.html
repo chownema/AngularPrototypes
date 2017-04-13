@@ -1,6 +1,6 @@
 test angular device manager
 <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.js'></script>
-<div ng-app='testMain' ng-controller="testDictionaryCtrl"></div>
+<div ng-app='testMain' ng-controller="testDeviceCtrl"></div>
 <script>
     // Init angular modules here
     angular.module('system.classes', []);
@@ -56,9 +56,21 @@ test angular device manager
                             "kind": "audioInput"
                         };
                         var device = new Device(testData.deviceId, testData.label, testData.kind);
-
+                        
                         function testDevice(dev) {
+                            // Display Dict
+                            console.log('Test Device Contents ::');
+                            console.log(dev);
 
+                            // Progress States
+                            // Current state :: Uninit
+                            console.log(dev.getDeviceState());
+                            
+                            // Next State :: Init
+                            
+                            // Next State :: Ready
+                            // Next State :: Active
+                            // Next State :: Paused
                         }
 
                         testDevice(device);                        
