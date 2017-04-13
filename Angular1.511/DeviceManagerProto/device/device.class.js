@@ -29,6 +29,7 @@
             //     Active: 3,
             //     Paused: 4
             // };
+            
             const DEVICE_STATE = new Dictionary(
                 {
                     Blocked: -1,
@@ -97,14 +98,14 @@
                             // Check if can progress
                             if(properties.state < DEVICE_STATE.getValue('Paused'))
                                 // Iterate to the next available state
-                                properties.state = DEVICE_STATE.getKeyByValue(properties.state);
+                                properties.state = properties.state+1;
                             break;
                         
                         case PROGRESS_COMMANDS.Regress:
                             // Check if can regress
                             if(properties.state > DEVICE_STATE.getValue('Uninitialized'))
                                 // Iterate to the next available state
-                                properties.state = DEVICE_STATE.getKeyByValue(properties.state);
+                                properties.state = properties.state-1;
                             break;
                         
                         case PROGRESS_COMMANDS.Blocked:
@@ -113,7 +114,6 @@
                                 // Move to blocked state
                                 properties.state = DEVICE_STATE.getValue('Blocked');
                             break;
-                        
                     }
                 }
 
