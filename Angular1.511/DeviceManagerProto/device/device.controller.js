@@ -12,7 +12,12 @@
          */
         .factory('DeviceController', [
             'Device',
-            function (Device) {
+            '$log',
+            function (Device, log) {
+                
+                var self = {
+                    deviceList : []
+                }
 
                 /**
                  * @class       DeviceController
@@ -25,9 +30,18 @@
                     /**
                      * @function loadDevices
                      * @description Function Desc
+                     * @return {boolean} Loaded devices status
                      */
-                    self.loadDevices = function () {
+                    self.loadDevices = function (otDeviceList) {
                         // do something useful
+                        self.deviceList = otDeviceList;
+                        
+                        // Check if devices recieved are empty
+                        if (self.deviceList === null || self.deviceList.length <= 0) {
+                            $log.error('ERROR Device Controller func loadDevices:: Devices failed to load'); 
+                        }
+
+                        
                     }
 
                     /**
