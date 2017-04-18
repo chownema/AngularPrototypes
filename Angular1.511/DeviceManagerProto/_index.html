@@ -67,10 +67,17 @@ test angular device manager
                             console.log(dev.getDeviceState());
                             
                             // Next State :: Init
-                            
+                            dev.progressDeviceState();
+                            console.log(dev.getDeviceState());
                             // Next State :: Ready
+                            dev.progressDeviceState();
+                            console.log(dev.getDeviceState());
                             // Next State :: Active
+                            dev.progressDeviceState();
+                            console.log(dev.getDeviceState());
                             // Next State :: Paused
+                            dev.progressDeviceState();
+                            console.log(dev.getDeviceState());
                         }
 
                         testDevice(device);                        

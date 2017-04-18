@@ -19,17 +19,6 @@
                 Video: 'videoInput'
             };
 
-            // Const Enum dictionary holding the device state
-            // Implement Stack state algorithm 
-            // const DEVICE_STATE = {
-            //     Blocked: -1,
-            //     Uninitialized: 0,
-            //     Initializing: 1,
-            //     Ready: 2,
-            //     Active: 3,
-            //     Paused: 4
-            // };
-
             const DEVICE_STATE = new Dictionary(
                 {
                     Blocked: -1,
@@ -44,9 +33,9 @@
             // Const Enum dictionary holding the device progress commands
             // Used to implement commands for the stack
             const PROGRESS_COMMANDS = {
-                Blocked: -1,
-                Progress: 0,
-                Regress: 1
+                BLOCKED: -1,
+                PROGRESS: 0,
+                REGRESS: 1
             };
 
             // Const Enum dictionary holding the device blocked states
@@ -74,7 +63,7 @@
                     label: dLabel,
                     kind: dKind
                 };
-                
+
                 // Init nonConst properties of the device object
                 var properties = {
                     state: DEVICE_STATE.getValue('Uninitialized'),
@@ -91,26 +80,26 @@
                  * @param       {PROGRESS_COMMANDS} ProgressCmd indicates how to progress
                  *              the devices state
                  */
-                self.shiftDeviceState = function(ProgressCmd) {
+                function shiftDeviceState (ProgressCmd) {
                     // Check what progress commmand is given
                     switch (ProgressCmd) {
-                        case PROGRESS_COMMANDS.Progress:
+                        case PROGRESS_COMMANDS.PROGRESS:
                             // Check if can progress
-                            if(properties.state < DEVICE_STATE.getValue('Paused'))
+                            if (properties.state < DEVICE_STATE.getValue('Paused'))
                                 // Iterate to the next available state
-                                properties.state = properties.state+1;
+                                properties.state = properties.state + 1;
                             break;
-                        
-                        case PROGRESS_COMMANDS.Regress:
+
+                        case PROGRESS_COMMANDS.REGRESS:
                             // Check if can regress
-                            if(properties.state > DEVICE_STATE.getValue('Uninitialized'))
+                            if (properties.state > DEVICE_STATE.getValue('Uninitialized'))
                                 // Iterate to the next available state
-                                properties.state = properties.state-1;
+                                properties.state = properties.state - 1;
                             break;
-                        
-                        case PROGRESS_COMMANDS.Blocked:
+
+                        case PROGRESS_COMMANDS.BLOCKED:
                             // Check if can be blocked
-                            if(properties.state !== DEVICE_STATE.getValue('Blocked'))
+                            if (properties.state !== DEVICE_STATE.getValue('Blocked'))
                                 // Move to blocked state
                                 properties.state = DEVICE_STATE.getValue('Blocked');
                             break;
@@ -122,8 +111,13 @@
                 self.getDeviceLabel = function () { return cProperties.label; };
                 self.getDeviceID = function () { return cProperties.ID; };
                 self.getBlockedStates = function () { return properties.blockedStates; };
-                self.getDeviceState = function () { return DEVICE_STATE.getKeyByValue(1); };
+                self.getDeviceState = function () { return DEVICE_STATE.getKeyByValue(properties.state); };
                 self.isDeviceBlocked = function () { return properties.blockedStates.length > 0 ? true : false; };
+                // Setter functions for the device object
+                self.progressDeviceState = function () { shiftDeviceState(PROGRESS_COMMANDS.PROGRESS); };
+                self.regressDeviceState = function () { shiftDeviceState(PROGRESS_COMMANDS.REGRESS); };
+                self.blockDeviceState = function () { shiftDeviceState(PROGRESS_COMMANDS.BLOCK); };
+                
 
                 // Return itself
                 return self;

@@ -13,7 +13,8 @@
         .factory('DeviceController', [
             'Device',
             '$log',
-            function (Device, log) {
+            '$exceptionHandler',
+            function (Device, log, $exceptionHandler) {
                 
                 var self = {
                     deviceList : []
@@ -38,6 +39,7 @@
                         
                         // Check if devices recieved are empty
                         if (self.deviceList === null || self.deviceList.length <= 0) {
+                            
                             $log.error('ERROR Device Controller func loadDevices:: Devices failed to load'); 
                         }
 
