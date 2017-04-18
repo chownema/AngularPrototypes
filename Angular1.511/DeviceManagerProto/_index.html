@@ -137,8 +137,9 @@ test angular device manager
                         var deviceController = new DeviceController();
                         // Load devices into controller
                         deviceController.loadDevices(deviceList);
+                        deviceController.setFirstSelectedDevices();
                         // Choose vid device
-                        deviceController.selectVideoDevice(deviceList);
+                        // deviceController.selectVideoDevice(deviceList);
                         // Get selected vid device
                         
                         // Choose aud device

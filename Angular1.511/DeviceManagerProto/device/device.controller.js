@@ -68,25 +68,44 @@
                      * @return {boolean} setFirstDevices Status
                      */
                     self.setFirstSelectedDevices = function() {
-                        // Check if selected devices are are null
-                        if (selectedVideoDevice && vDeviceDict.length > 0) {
+                        // Booleans Video and Audio dictionaries are initialized
+                        var isVDListInit = self.vDeviceDict.getLength() > 0;
+                        var isADListInit = self.aDeviceDict.getLength() > 0;
+
+                        // Check if selected devices are are null, reset and remove it if found
+                        if (self.selectedVideoDevice && isVDListInit) {
                             // Search for device and reset it
-                            for (i; i < vDeviceDict.length; i++) {
-                                if (selectedVideoDevice.getDeviceID === vDeviceDict[i].getDeviceID) {
-                                    
+                            for (i = 0; i < self.vDeviceDict.getLength(); i++) {
+                                var device = self.vDeviceDict.getValue(self.selectedVideoDevice.getDeviceID);
+                                if (device) {
+                                    // Reset device ensure clean state
+                                    device.resetDeviceState();
                                 }
                             }
-                            
-                            // unacloc device
-                            selectedVideoDevice = null;
+                            // unacloc selected device 
+                            self.selectedVideoDevice = null;
                         }
-                        // // Check if video devices
-                        // if (vDeviceDict.length > 0) {
-                            
-                        // }
-                        // DictaDeviceList.length > 0) {
-                            
-                        // }
+
+                        // Check and set video input device 
+                        if (self.vDeviceList.getLength() > 0 && isVDListInit) {
+                            // getID of first item in dictionary
+                            var id = self.vDeviceList.getKeys()[0];
+                            self.selectedVideoDevice = self.vDeviceList.getValue(id);
+                        } else {
+                              $exceptionHandler('DeviceController : setFirstSelectedDevices', 
+                                'Failed to set init video input device');
+                        }
+
+                        // Check and set audio input device
+                        if (self.aDeviceList.getLength() > 0 && isADListInit) {
+                            // getID of first item in dictionary
+                            var id = self.aDeviceList.getKeys()[0];
+                            self.selectedAudioDevice = self.aDeviceList.getValue(id);
+                        } else {
+                              $exceptionHandler('DeviceController : setFirstSelectedDevices', 
+                                'Failed to set init audio input device');
+                        }
+
                     }
 
                     /**

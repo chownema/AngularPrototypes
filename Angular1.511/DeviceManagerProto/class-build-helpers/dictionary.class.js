@@ -147,7 +147,7 @@
                 };
 
                 /**
-                 * @function getDictMap
+                 * @function getData
                  * @return {Dict} map data
                  */
                 dict.getData = function () {
