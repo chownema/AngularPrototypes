@@ -20,12 +20,14 @@
             var Dictionary = function (oDictionary) {
                 var dict = this;
 
+                
                 var properties = {
-                    data: oDictionary,
+                    data: oDictionary === undefined ? {} : oDictionary,
                     hasNext: false,
                     hasPrev: false,
                     iterIndex : 0
                 };
+
 
                 // Internal command argument 
                 const ARGS = {
@@ -123,6 +125,14 @@
                 };
 
                 /**
+                 * @function getlength
+                 * @return {Int} length of Dictionary
+                 */
+                dict.getLength = function () {
+                    return Object.keys(properties.data).length;
+                };
+
+                /**
                  * @function getValues
                  * @return {List} values 
                  */
@@ -140,7 +150,7 @@
                  * @function getDictMap
                  * @return {Dict} map data
                  */
-                dict.getDictMap = function () {
+                dict.getData = function () {
                     return properties.data;
                 }
 
@@ -160,6 +170,15 @@
                  * @param {*} value
                  */
                 dict.setValue = function(key, value) {
+                    properties.data[key] = value;
+                }
+
+                /**
+                 * @function add
+                 * @param {string} key
+                 * @param {*} value
+                 */
+                dict.add = function(key, value) {
                     properties.data[key] = value;
                 }
 

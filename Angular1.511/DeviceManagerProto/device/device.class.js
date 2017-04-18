@@ -90,6 +90,7 @@
                 self.isDeviceBlocked = function () { return  properties.state === DeviceConstants.DEVICE_STATE.getValue('Blocked'); };
                 
                 // Setter functions for the device object
+                self.resetDeviceState = function() { properties.state = 0; };
                 self.progressDeviceState = function () { shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.PROGRESS); };
                 self.regressDeviceState = function () { shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.REGRESS); };
                 
