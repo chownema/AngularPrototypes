@@ -136,6 +136,14 @@
                     return values;
                 };
 
+                /**
+                 * @function getDictMap
+                 * @return {Dict} map data
+                 */
+                dict.getDictMap = function () {
+                    return properties.data;
+                }
+
 
                 /**
                  * @function getValue
@@ -145,6 +153,16 @@
                 dict.getValue = function (key) {
                     return properties.data[key];
                 };
+
+                /**
+                 * @function setValue
+                 * @param {string} key
+                 * @param {*} value
+                 */
+                dict.setValue = function(key, value) {
+                    properties.data[key] = value;
+                }
+
 
                 return dict;
             };

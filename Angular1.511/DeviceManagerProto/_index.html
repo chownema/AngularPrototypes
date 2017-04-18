@@ -82,6 +82,24 @@ test angular device manager
                             dev.progressDeviceState();
                             console.log(dev.getDeviceState());
 
+                            // Back to Active state
+                            dev.regressDeviceState();
+                            console.log(dev.getDeviceState());
+
+                            // Set state to BLOCKED
+                            dev.blockDeviceState(
+                                ['Firewall', 'PermissionsNotGiven', 'InOtherAppUse'] // Set some blocked states
+                            );
+                            console.log(dev.getDeviceState());
+                            console.log('is this device blocked :: ' + dev.isDeviceBlocked());
+                            console.log('device blocked states :: ');
+                            console.log(dev.getBlockedStates());
+                            // Set state to UNBLOCKED
+                            dev.unblockDeviceState();
+                            console.log(dev.getDeviceState());
+                            console.log('is this device blocked :: ' + dev.isDeviceBlocked());
+                            console.log('device blocked states :: ');
+                            console.log(dev.getBlockedStates());
                         }
 
                         testDevice(device);                        
