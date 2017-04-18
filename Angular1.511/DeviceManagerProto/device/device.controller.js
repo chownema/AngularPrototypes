@@ -20,13 +20,7 @@
                 var self = {
                     deviceList : []
                 };
-
-                // Const Enum dictionary holding device types
-                const DEVICE_TYPE = {
-                    Audio: 'audioInput',
-                    Video: 'videoInput'
-                };
-
+                
                 /**
                  * @class       DeviceController
                  * @description Desc of Class

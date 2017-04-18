@@ -13,6 +13,7 @@
             'Dictionary', 
             function (Dictionary) {
             var DeviceConstants = {
+                // Device States enum
                 DEVICE_STATE : new Dictionary(
                     {
                         Blocked: -1,
@@ -23,12 +24,17 @@
                         Paused: 4
                     }
                 ),
+                // Device State progress commands enum
                 PROGRESS_COMMANDS :{
                     BLOCKED: -1,
                     PROGRESS: 0,
                     REGRESS: 1
                 },
-
+                // Device Types enum
+                DEVICE_TYPE : {
+                    Audio: 'audioInput',
+                    Video: 'videoInput'
+                }
             }
             return DeviceConstants;
         }]);
