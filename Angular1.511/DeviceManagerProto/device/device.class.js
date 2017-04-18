@@ -11,43 +11,20 @@
          * @description Creates a singleton service instance of 
          *              Device object.
          */
-        .factory('Device', ['Dictionary', function (Dictionary) {
-
-            // Const Enum dictionary holding device types
-            const DEVICE_TYPE = {
-                Audio: 'audioInput',
-                Video: 'videoInput'
-            };
-
-            const DEVICE_STATE = new Dictionary(
-                {
-                    Blocked: -1,
-                    Uninitialized: 0,
-                    Initializing: 1,
-                    Ready: 2,
-                    Active: 3,
-                    Paused: 4
-                }
-            );
-
-            // Const Enum dictionary holding the device progress commands
-            // Used to implement commands for the stack
-            const PROGRESS_COMMANDS = {
-                BLOCKED: -1,
-                PROGRESS: 0,
-                REGRESS: 1
-            };
+        .factory('Device', [
+            'Dictionary', 
+            'DeviceConstants',
+             function (Dictionary, DeviceConstants) {
 
             /**
              * @class                     Device
              * @description               Class to hold a device object
              * @param {string} dID        device Unique ID
              * @param {string} dLabel     device label or name
-             * @param {DEVICE_TYPE} dKind kind of device input
+             * @param {DEVICE_TYPE} dKind kind of device input inside DeviceController
              */
             var Device = function (dID, dLabel, dKind) {
                 var self = this;
-
                 // Init const properties of the device object
                 const cProperties = {
                     ID: dID,
@@ -57,7 +34,7 @@
 
                 // Init nonConst properties of the device object
                 var properties = {
-                    state: DEVICE_STATE.getValue('Uninitialized'),
+                    state: DeviceConstants.DEVICE_STATE.getValue('Uninitialized'),
                     blockedStates: new Dictionary(
                         { // Device can have one or more of these states active in one istance
                             Firewall: false, /*case 1554*/
@@ -81,25 +58,25 @@
                 function shiftDeviceState (ProgressCmd) {
                     // Check what progress commmand is given
                     switch (ProgressCmd) {
-                        case PROGRESS_COMMANDS.PROGRESS:
+                        case DeviceConstants.PROGRESS_COMMANDS.PROGRESS:
                             // Check if can progress
-                            if (properties.state < DEVICE_STATE.getValue('Paused'))
+                            if (properties.state < DeviceConstants.DEVICE_STATE.getValue('Paused'))
                                 // Iterate to the next available state
                                 properties.state = properties.state + 1;
                             break;
 
-                        case PROGRESS_COMMANDS.REGRESS:
+                        case DeviceConstants.PROGRESS_COMMANDS.REGRESS:
                             // Check if can regress
-                            if (properties.state > DEVICE_STATE.getValue('Uninitialized'))
+                            if (properties.state > DeviceConstants.DEVICE_STATE.getValue('Uninitialized'))
                                 // Iterate to the next available state
                                 properties.state = properties.state - 1;
                             break;
 
-                        case PROGRESS_COMMANDS.BLOCKED:
+                        case DeviceConstants.PROGRESS_COMMANDS.BLOCKED:
                             // Check if can be blocked
-                            if (properties.state !== DEVICE_STATE.getValue('Blocked'))
+                            if (properties.state !== DeviceConstants.DEVICE_STATE.getValue('Blocked'))
                                 // Move to blocked state
-                                properties.state = DEVICE_STATE.getValue('Blocked');
+                                properties.state = DeviceConstants.DEVICE_STATE.getValue('Blocked');
                             break;
                     }
                 }
@@ -109,12 +86,12 @@
                 self.getDeviceLabel = function () { return cProperties.label; };
                 self.getDeviceID = function () { return cProperties.ID; };
                 self.getBlockedStates = function () { return properties.blockedStates.getDictMap(); };
-                self.getDeviceState = function () { return DEVICE_STATE.getKeyByValue(properties.state); };
-                self.isDeviceBlocked = function () { return  properties.state === DEVICE_STATE.getValue('Blocked'); };
+                self.getDeviceState = function () { return DeviceConstants.DEVICE_STATE.getKeyByValue(properties.state); };
+                self.isDeviceBlocked = function () { return  properties.state === DeviceConstants.DEVICE_STATE.getValue('Blocked'); };
                 
                 // Setter functions for the device object
-                self.progressDeviceState = function () { shiftDeviceState(PROGRESS_COMMANDS.PROGRESS); };
-                self.regressDeviceState = function () { shiftDeviceState(PROGRESS_COMMANDS.REGRESS); };
+                self.progressDeviceState = function () { shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.PROGRESS); };
+                self.regressDeviceState = function () { shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.REGRESS); };
                 
                 // Blocking state functions
                 self.blockDeviceState = function (blockedStatesIssued) {
@@ -128,7 +105,7 @@
                             }
                         }
                     }
-                    shiftDeviceState(PROGRESS_COMMANDS.BLOCKED); 
+                    shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.BLOCKED); 
                 };
 
                 // Unblocking device moves device state to uninit
@@ -138,7 +115,7 @@
                     for (i = 0; i < bsKeys.length; i++) {
                         properties.blockedStates.setValue([bsKeys[i]], false);
                     }
-                    shiftDeviceState(PROGRESS_COMMANDS.PROGRESS); 
+                    shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.PROGRESS); 
                 };
                 
 

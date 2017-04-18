@@ -14,11 +14,18 @@
             'Device',
             '$log',
             '$exceptionHandler',
-            function (Device, log, $exceptionHandler) {
+            'DeviceConstants',
+            function (Device, log, $exceptionHandler, DeviceConstants) {
                 
                 var self = {
                     deviceList : []
-                }
+                };
+
+                // Const Enum dictionary holding device types
+                const DEVICE_TYPE = {
+                    Audio: 'audioInput',
+                    Video: 'videoInput'
+                };
 
                 /**
                  * @class       DeviceController
@@ -28,22 +35,66 @@
                 var DeviceController = function (arg) {
                     var self = this;
 
+                    self = {
+                        vDeviceList : [],
+                        aDeviceList : [],
+                        selectedVideoDevice : null,
+                        selectedAudioDevice : null,
+                    }
+
                     /**
                      * @function loadDevices
-                     * @description Function Desc
+                     * @description loads devices into two Device Obj type lists 
                      * @return {boolean} Loaded devices status
                      */
                     self.loadDevices = function (otDeviceList) {
-                        // do something useful
-                        self.deviceList = otDeviceList;
+                        // filterDevices into correct list
+                        for (i = 0; i < otDeviceList.length; i++) {
+                            // Create Device objects with their given data
+                            switch (otDeviceList[i].type){ // NOTE : change on opentok OTdevices will break this
+                                case '':
+                                break;
+                            }
+                        }
+                        
+                        
                         
                         // Check if devices recieved are empty
                         if (self.deviceList === null || self.deviceList.length <= 0) {
-                            
                             $log.error('ERROR Device Controller func loadDevices:: Devices failed to load'); 
                         }
+                    }
 
-                        
+                    /**
+                     * @function selectVideoDevice
+                     * @return {boolean} selectedDevice Status
+                     */
+                    self.selectVideoDevice = function (deviceID) {
+                        var selectedDevice = false;
+                        if (self.deviceList !== null || self.DeviceList.length > 0)
+                        // Get device uninit state from deviceID
+                        var device = self.deviceList
+                        // Init device and progress state
+                        // If is ready, set selectedVideoDevice to this device
+                        // Check if selectedDevice matches deviceID
+                        // Set device to in use
+                        // return status
+                        return selectedDevice;
+                    }
+
+                    /**
+                     * @function selectAudioDevice
+                     * @return {boolean} selectedDevice Status
+                     */
+                    self.selectAudioDevice = function (deviceID) {
+                        var selectedDevice = false;
+                        // Get device uninit state from deviceID
+                        // Init device and progress state
+                        // If is ready, set selectedAudioDevice to this device
+                        // Check if selectedDevice matches deviceID
+                        // Set device to in use
+                        // return status
+                        return selectedDevice;
                     }
 
                     /**
