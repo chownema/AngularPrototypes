@@ -38,20 +38,21 @@
                     self.loadDevices = function (otDeviceList) {
                         // filterDevices into correct list
                         for (i = 0; i < otDeviceList.length; i++) {
+                            var id = otDeviceList[i]['deviceId'];
+                            var kind = otDeviceList[i]['kind'];
+                            var label = otDeviceList[i]['label'];
                             // Create Device objects with their given data
                             switch (otDeviceList[i]['kind']){ // NOTE : change on opentok OTdevices will break this
                                 case DeviceConstants.DEVICE_TYPE.Video:
-                                    var id = otDeviceList[i]['deviceId'];
-                                    self.vDeviceDict.add(id, new Device(otDeviceList[i]));
+                                    self.vDeviceDict.add(id, new Device(id, label, kind));
                                     break;
                                 case DeviceConstants.DEVICE_TYPE.Audio:
-                                    var id = otDeviceList[i]['deviceId'];
-                                    self.aDeviceDict.add(id, new Device(otDeviceList[i]));
+                                    self.aDeviceDict.add(id, new Device(id, label, kind));
                                     break;
                             }
                         }
-                        console.log(self.vDeviceDict.getData());
-                        console.log(self.aDeviceDict.getData());
+
+                        
                         // Check if devices recieved are empty
                         if (self.vDeviceDict === null ||  self.aDeviceDict.getLength() <= 0) {
                             $exceptionHandler('ERROR DeviceController loadDevices', 
@@ -76,6 +77,7 @@
                         if (self.selectedVideoDevice && isVDListInit) {
                             // Search for device and reset it
                             for (i = 0; i < self.vDeviceDict.getLength(); i++) {
+                                // Get the device that may already be loaded into the selected device
                                 var device = self.vDeviceDict.getValue(self.selectedVideoDevice.getDeviceID);
                                 if (device) {
                                     // Reset device ensure clean state
@@ -87,25 +89,35 @@
                         }
 
                         // Check and set video input device 
-                        if (self.vDeviceList.getLength() > 0 && isVDListInit) {
-                            // getID of first item in dictionary
-                            var id = self.vDeviceList.getKeys()[0];
-                            self.selectedVideoDevice = self.vDeviceList.getValue(id);
+                        if (self.vDeviceDict.getLength() > 0 && isVDListInit) {
+                            // Get the first device in the dictionary
+                            self.selectedVideoDevice = self.vDeviceDict.getValueByPos(0);
                         } else {
                               $exceptionHandler('DeviceController : setFirstSelectedDevices', 
                                 'Failed to set init video input device');
                         }
 
                         // Check and set audio input device
-                        if (self.aDeviceList.getLength() > 0 && isADListInit) {
-                            // getID of first item in dictionary
-                            var id = self.aDeviceList.getKeys()[0];
-                            self.selectedAudioDevice = self.aDeviceList.getValue(id);
+                        if (self.vDeviceDict.getLength() > 0 && isADListInit) {
+                            // Get the first device in the dictionary
+                            self.selectedAudioDevice = self.aDeviceDict.getValueByPos(0);
                         } else {
                               $exceptionHandler('DeviceController : setFirstSelectedDevices', 
                                 'Failed to set init audio input device');
                         }
-
+                        
+                        // // LOG DEVICES SELECTED
+                        // console.log('Logging Devices Initially Selected');
+                        
+                        // console.log(self.selectedAudioDevice);
+                        // console.log(self.selectedAudioDevice.getDeviceKind());
+                        // console.log(self.selectedAudioDevice.getDeviceID());
+                        // console.log(self.selectedAudioDevice.getDeviceLabel());
+                        
+                        // console.log(self.selectedVideoDevice);
+                        // console.log(self.selectedVideoDevice.getDeviceKind());
+                        // console.log(self.selectedVideoDevice.getDeviceID());
+                        // console.log(self.selectedVideoDevice.getDeviceLabel());
                     }
 
                     /**
@@ -114,9 +126,9 @@
                      */
                     self.selectVideoDevice = function (DeviceID) {
                         var selectedDevice = false;
-                        if (self.deviceList !== null || self.DeviceList.length > 0)
+                        if (self.vDeviceDict !== null || self.vDeviceDict.length > 0)
                         // Get device uninit state from deviceID
-                        var device = self.deviceList;
+                        var device = self.vDeviceDict;
                         // Init device and progress state
                         // If is ready, set selectedVideoDevice to this device
                         // Check if selectedDevice matches deviceID
@@ -141,22 +153,6 @@
                     }
 
                     
-
-                    /**
-                     * @function functionname
-                     * @description Function Desc
-                     */
-                    self.initDeviceSelectedDevice = function () {
-                        // do something useful
-                    }
-
-                    /**
-                     * @function functionname
-                     * @description Function Desc
-                     */
-                    self.initDeviceSelectedDevice = function () {
-                        // do something useful
-                    }
 
                     /**
                      * @function functionname

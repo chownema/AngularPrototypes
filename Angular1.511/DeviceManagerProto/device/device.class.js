@@ -82,6 +82,8 @@
                 }
 
                 // Getter functions for the device object
+                self.getConstProperties = function() { return cProperties; };
+                self.getProperties = function() { return properties; };
                 self.getDeviceKind = function () { return cProperties.kind; };
                 self.getDeviceLabel = function () { return cProperties.label; };
                 self.getDeviceID = function () { return cProperties.ID; };

@@ -165,6 +165,18 @@
                 };
 
                 /**
+                 * @function getValueByPos
+                 * @param {Int} pos
+                 * @return {*} object 
+                 */
+                dict.getValueByPos = function (pos) {
+                    var key = Object.keys(properties.data)[pos]
+                    var object = properties.data[key];
+                    return object;
+                };
+                
+
+                /**
                  * @function setValue
                  * @param {string} key
                  * @param {*} value
