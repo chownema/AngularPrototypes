@@ -1,6 +1,6 @@
 test angular device manager
 <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.js'></script>
-<div ng-app='testMain' ng-controller="testDeviceCtrl"></div>
+<div ng-app='testMain' ng-controller="testdeviceControllerCtrl"></div>
 <script>
     // Init angular modules here
     angular.module('system.classes', []);
@@ -104,7 +104,51 @@ test angular device manager
 
                         testDevice(device);                        
                     }
-                ]);
+                ])
+
+            .controller('testdeviceControllerCtrl',[
+                'DeviceController',
+                function (DeviceController) {
+                    var testData = [{
+                            "deviceId": "default",
+                            "label": "Default",
+                            "kind": "audioInput"
+                        }, {
+                            "deviceId": "communications",
+                            "label": "Communications",
+                            "kind": "audioInput"
+                        }, {
+                            "deviceId": "d663aae21093c8427b252d889f185755d60477091ef848ebc5ad04ddb70ae9cb",
+                            "label": "Microphone (HD Webcam C270)",
+                            "kind": "audioInput"
+                        }, {
+                            "deviceId": "ea145ba04a1b399e6f7e59424442c5bb39b0ac8e1a36195d747a171de964e47d",
+                            "label": "Microphone (Realtek Audio)",
+                            "kind": "audioInput"
+                        }, {
+                            "deviceId": "bef0ee652fddf211c01a7649637b09fc631ffe5b60ed478589eb8baa3a83b414",
+                            "label": "",
+                            "kind": "videoInput"
+                        }];
+
+                        console.log(testData[0]['kind']);
+
+                    function testDeviceController(deviceList) {
+                        var deviceController = new DeviceController();
+                        // Load devices into controller
+                        deviceController.loadDevices(deviceList);
+                        // Choose vid device
+                        deviceController.selectVideoDevice(deviceList);
+                        // Get selected vid device
+                        
+                        // Choose aud device
+
+                        // Get selected aud device
+                    }
+
+                    testDeviceController(testData);
+                }
+            ]); 
     
     // angular.module('system.initialization', []);
     // Playground
@@ -123,3 +167,4 @@ test angular device manager
 <!--include objects-->
 <script src='device/device.constants.js'></script>
 <script src='device/device.class.js'></script>
+<script src='device/device.controller.js'></script>

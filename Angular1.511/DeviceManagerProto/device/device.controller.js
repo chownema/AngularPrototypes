@@ -16,17 +16,11 @@
             '$exceptionHandler',
             'DeviceConstants',
             function (Device, log, $exceptionHandler, DeviceConstants) {
-                
-                var self = {
-                    deviceList : []
-                };
-                
                 /**
-                 * @class       DeviceController
+                 * @class DeviceController
                  * @description Desc of Class
-                 * @param {int} arg arg desc
                  */
-                var DeviceController = function (arg) {
+                var DeviceController = function () {
                     var self = this;
 
                     self = {
@@ -45,17 +39,21 @@
                         // filterDevices into correct list
                         for (i = 0; i < otDeviceList.length; i++) {
                             // Create Device objects with their given data
-                            switch (otDeviceList[i].type){ // NOTE : change on opentok OTdevices will break this
-                                case '':
-                                break;
+                            switch (otDeviceList[i]['kind']){ // NOTE : change on opentok OTdevices will break this
+                                case DeviceConstants.DEVICE_TYPE.Video:
+                                    self.vDeviceList.push(otDeviceList[i]);
+                                    break;
+                                case DeviceConstants.DEVICE_TYPE.Audio:
+                                    self.aDeviceList.push(otDeviceList[i]);
+                                    break;
                             }
                         }
-                        
-                        
-                        
+                        console.log(self.vDeviceList);
+                        console.log(self.aDeviceList);
                         // Check if devices recieved are empty
-                        if (self.deviceList === null || self.deviceList.length <= 0) {
-                            $log.error('ERROR Device Controller func loadDevices:: Devices failed to load'); 
+                        if ((self.vDeviceList === null || self.vDeviceList === null) 
+                            || self.vDeviceList.length + self.aDeviceList.length <= 0) {
+                            $exceptionHandler('ERROR Device Controller func loadDevices', 'Devices failed to load'); 
                         }
                     }
 
