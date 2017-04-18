@@ -59,7 +59,7 @@
 
                 // Init const properties of the device object
                 const cProperties = {
-                    deviceId: dID,
+                    ID: dID,
                     label: dLabel,
                     kind: dKind
                 };

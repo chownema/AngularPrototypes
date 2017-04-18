@@ -58,9 +58,12 @@ test angular device manager
                         var device = new Device(testData.deviceId, testData.label, testData.kind);
                         
                         function testDevice(dev) {
-                            // Display Dict
+                            // Display Object variables
                             console.log('Test Device Contents ::');
                             console.log(dev);
+                            console.log('Test Device ID :: ' + dev.getDeviceID());
+                            console.log('Test Device Label :: ' + dev.getDeviceLabel());
+                            console.log('Test Device Kind :: ' + dev.getDeviceKind());
 
                             // Progress States
                             // Current state :: Uninit
@@ -78,6 +81,7 @@ test angular device manager
                             // Next State :: Paused
                             dev.progressDeviceState();
                             console.log(dev.getDeviceState());
+
                         }
 
                         testDevice(device);                        
