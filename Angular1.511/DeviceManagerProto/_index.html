@@ -1,15 +1,16 @@
 test angular device manager
 <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.js'></script>
-
+<!--testing out a webrtc service handler project script bellow-->
 <script src='device/DetectRTC.js'></script>
 <div ng-app='testMain' ng-controller="testdeviceControllerCtrl"></div>
 <script>
     // Init angular modules here
     angular.module('system.classes', []);
-    angular.module('system.device', ['system.classes']);
+    angular.module('system.device', ['system.classes', 'DetectRTC']);
     angular.module('testMain', [
         'system.classes',
-        'system.device'
+        'system.device',
+        'DetectRTC'
         ])
         
         .controller('testDictionaryCtrl', [
@@ -110,14 +111,29 @@ test angular device manager
 
             .controller('testdeviceControllerCtrl',[
                 'DeviceController',
-                function (DeviceController) {
-                    // var mediaSources = { 
-                    //     'audioInput' : DetectRTC.audioInputDevices,
-                    //     'audioOutput': DetectRTC.audioOutputDevices,
-                    //     'videoInput' : DetectRTC.videoInputDevices
-                    // };
+                'DetectRTC',
+                function (DeviceController, DetectRTC) {
+                    var self = {
+                        mediaSources : {}
+                    };
+
+                    // Testing DetectRTC
+                    DetectRTC.load(function() {
+                        self.mediaSources = {
+                            'videoPermissions' :  DetectRTC.isWebsiteHasWebcamPermissions,
+                            'audioPermissions' :  DetectRTC.isWebsiteHasMicrophonePermissions,
+                            'audioInput' : DetectRTC.audioInputDevices,
+                            'audioOutput': DetectRTC.audioOutputDevices,
+                            'videoInput' : DetectRTC.videoInputDevices
+                        };
+                        // log media sources
+                        console.log(self.mediaSources);
+                    });
+
+                     
+ 
+
                     
-                    // console.log(mediaSources);
                     var testData = [{
                             "deviceId": "default",
                             "label": "Default",
@@ -153,12 +169,17 @@ test angular device manager
 
                         // // Get selected aud device
                         
-                        // // Set Flags here
-                        deviceController.setBlockedState('Firewall', true);
-                        deviceController.setBlockedState('InOtherAppUse', true);
-                        deviceController.setBlockedState('PermissionDenied', true);
+                        // // Set Blocked Flags here
+                        // deviceController.setBlockedState('Firewall', true);
+                        // deviceController.setBlockedState('InOtherAppUse', true);
+                        // deviceController.setBlockedState('PermissionDenied', true);
 
-                        console.log(deviceController.getBlockedStates());
+                        // console.log(deviceController.getBlockedStates());
+
+                        deviceController.updatePermissions();
+                        console.log('Has permissions ' + deviceController.hasPermissions());
+                        
+                        
                     }
 
                     testDeviceController(testData);
@@ -177,7 +198,6 @@ test angular device manager
 
 
 <!--<script src='initialisation/browser-config.service.js'></script>-->
-<!--<script src='class-build-helpers/immute.service.js'></script>-->
 <script src='class-build-helpers/dictionary.class.js'></script>
 <!--include objects-->
 <script src='device/device.constants.js'></script>

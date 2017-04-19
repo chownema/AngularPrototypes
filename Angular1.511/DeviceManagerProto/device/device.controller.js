@@ -28,15 +28,47 @@
                         // aDeviceDict : new Dictionary(),
                         // selectedVideoDevice : null,
                         // selectedAudioDevice : null,
-                        blockedStates : new Dictionary(
+                        blockedStates: new Dictionary(
                             { // DeviceController can have one or more of these states active in one istance
                                 Firewall: false, /*case 1554*/
                                 InOtherAppUse: false, /*case 1013 */
                                 PermissionDenied: false /*PermissionDenied*/
                             }
-                        )
+                        ),
+                        Permissions: {
+                            audio: DetectRTC.isWebsiteHasMicrophonePermissions,
+                            video: DetectRTC.isWebsiteHasWebcamPermissions
+                        }
+
+
                     };
-                    
+
+                    /**
+                     * @function updatePermissions
+                     * @description Updates the status of permissions and the blocked state
+                     */
+                    self.updatePermissions = function () {
+                        try {
+                            self.permissions = {
+                                audio: DetectRTC.isWebsiteHasMicrophonePermissions,
+                                video: DetectRTC.isWebsiteHasWebcamPermissions
+                            };
+                            var isDenied = !(self.permissions['video'] && self.permissions['audio']);
+                            self.blockedStates.setValue('PermissionDenied', isDenied);
+                        } catch (Err) {
+                            $exceptionHandler('updatePermissions ::', Err);
+                        }
+                    };
+
+                    /**
+                     * @function hasPermissions
+                     * @return {boolean} if DeviceController has permissions
+                     */
+                    self.hasPermissions = function () {
+                        return !self.blockedStates.getValue('PermissionDenied');
+                    }
+
+
                     /**
                      * @function loadDevices
                      * @param {blockedStates} blockState
@@ -44,15 +76,15 @@
                      * @description Sets or Removes the blocked state of the device controller
                      * @return {boolean} success status
                      */
-                    self.setBlockedState = function(blockState, isblock) {
+                    self.setBlockedState = function (blockState, isblock) {
                         // Ensure
                         if (isblock == null || blockState == null) {
-                             $exceptionHandler('Wrong Arguments Supplied', 'setBlockedState');
-                             return false;
+                            $exceptionHandler('setBlockedState ::', 'Wrong Arguments Supplied');
+                            return false;
                         }
                         if (isblock == '' || blockState == '') {
-                             $exceptionHandler('Wrong Arguments Supplied', 'setBlockedState');
-                             return false;
+                            $exceptionHandler('setBlockedState ::', 'Wrong Arguments Supplied');
+                            return false;
                         }
 
                         switch (blockState) {
@@ -106,7 +138,7 @@
                         //     }
                         // }
 
-                        
+
                         // // Check if devices recieved are empty
                         // if (self.vDeviceDict === null ||  self.aDeviceDict.getLength() <= 0) {
                         //     $exceptionHandler('ERROR DeviceController loadDevices', 
@@ -117,12 +149,12 @@
                         //          'Video Devices failed to load');
                         // }
                     }
-                    
+
                     /**
                      * @function setFirstDevices
                      * @return {boolean} setFirstDevices Status
                      */
-                    self.setFirstSelectedDevices = function() {
+                    self.setFirstSelectedDevices = function () {
                         $exceptionHandler('Not Implemented yet', 'setFirstSelectedDevices');
                         // // Booleans Video and Audio dictionaries are initialized
                         // var isVDListInit = self.vDeviceDict.getLength() > 0;
@@ -196,7 +228,7 @@
                         // return selectedDevice;
                     }
 
-                    
+
 
                     /**
                      * @function functionname

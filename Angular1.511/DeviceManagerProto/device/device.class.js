@@ -79,7 +79,6 @@
                 self.getDeviceKind = function () { return cProperties.kind; };
                 self.getDeviceLabel = function () { return cProperties.label; };
                 self.getDeviceID = function () { return cProperties.ID; };
-                // self.getBlockedStates = function () { return properties.blockedStates.getDictMap(); };
                 self.getDeviceState = function () { return DeviceConstants.DEVICE_STATE.getKeyByValue(properties.state); };
                 self.isDeviceBlocked = function () { return  properties.state === DeviceConstants.DEVICE_STATE.getValue('Blocked'); };
                 
@@ -87,31 +86,6 @@
                 self.resetDeviceState = function() { properties.state = 0; };
                 self.progressDeviceState = function () { shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.PROGRESS); };
                 self.regressDeviceState = function () { shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.REGRESS); };
-                
-                // Blocking state functions
-                // self.blockDeviceState = function (blockedStatesIssued) {
-                //     // Set some blocked states to true
-                //     var bsKeys = properties.blockedStates.getKeys();
-                //     for (i = 0; i < bsKeys.length; i++) {
-                //         for (j = 0; j < blockedStatesIssued.length; j++) {
-                //             if (bsKeys[i] === blockedStatesIssued[j]) {
-                //                 // Set value at device blocked states position
-                //                 properties.blockedStates.setValue([bsKeys[i]], true);
-                //             }
-                //         }
-                //     }
-                //     shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.BLOCKED); 
-                // };
-
-                // Unblocking device moves device state to uninit
-                // self.unblockDeviceState = function () { 
-                //     // Reset all blocked states to false
-                //     var bsKeys = properties.blockedStates.getKeys();
-                //     for (i = 0; i < bsKeys.length; i++) {
-                //         properties.blockedStates.setValue([bsKeys[i]], false);
-                //     }
-                //     shiftDeviceState(DeviceConstants.PROGRESS_COMMANDS.PROGRESS); 
-                // };
                 
 
                 // Return itself
