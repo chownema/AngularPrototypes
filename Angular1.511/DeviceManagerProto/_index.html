@@ -111,13 +111,13 @@ test angular device manager
             .controller('testdeviceControllerCtrl',[
                 'DeviceController',
                 function (DeviceController) {
-                    var mediaSources = { 
-                        'audioInput' : DetectRTC.audioInputDevices,
-                        'audioOutput': DetectRTC.audioOutputDevices,
-                        'videoInput' : DetectRTC.videoInputDevices
-                    };
+                    // var mediaSources = { 
+                    //     'audioInput' : DetectRTC.audioInputDevices,
+                    //     'audioOutput': DetectRTC.audioOutputDevices,
+                    //     'videoInput' : DetectRTC.videoInputDevices
+                    // };
                     
-                    console.log(mediaSources);
+                    // console.log(mediaSources);
                     var testData = [{
                             "deviceId": "default",
                             "label": "Default",
@@ -141,7 +141,7 @@ test angular device manager
                         }];
 
                     function testDeviceController(deviceList) {
-                        var c = new DeviceController();
+                        var deviceController = new DeviceController();
                         // // Load devices into controller
                         // deviceController.loadDevices(deviceList);
                         // deviceController.setFirstSelectedDevices();
@@ -154,7 +154,11 @@ test angular device manager
                         // // Get selected aud device
                         
                         // // Set Flags here
-                        setBlockedState.setBlockedState();
+                        deviceController.setBlockedState('Firewall', true);
+                        deviceController.setBlockedState('InOtherAppUse', true);
+                        deviceController.setBlockedState('PermissionDenied', true);
+
+                        console.log(deviceController.getBlockedStates());
                     }
 
                     testDeviceController(testData);

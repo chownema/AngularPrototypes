@@ -57,13 +57,13 @@
 
                         switch (blockState) {
                             case 'Firewall':
-                                blockedStates.setValue('Firewall', isblock);
+                                self.blockedStates.setValue('Firewall', isblock);
                                 break;
                             case 'InOtherAppUse':
-                                blockedStates.setValue('InOtherAppUse', isblock);
+                                self.blockedStates.setValue('InOtherAppUse', isblock);
                                 break;
                             case 'PermissionDenied':
-                                blockedStates.setValue('PermissionDenied', isblock);
+                                self.blockedStates.setValue('PermissionDenied', isblock);
                                 break;
                         }
 
@@ -78,7 +78,8 @@
                      * @return {List} blockedStateList
                      */
                     self.getBlockedStates = function () {
-                        var blockedStateList = blockedStates.getKeyListByValue(true);
+                        var blockedStateList = self.blockedStates.getKeyListByValue(true);
+                        console.log(self.blockedStates.getData());
                         return blockedStateList;
                     };
 

@@ -90,7 +90,7 @@
                     // Choose what to return
                     if (args === ARGS.match_one)
                         return result;
-                    else if (args === ARGS.concat)
+                    else if (args === ARGS.concat || args === ARGS.concat_no_null)
                         return resultList;
 
                     return null;
