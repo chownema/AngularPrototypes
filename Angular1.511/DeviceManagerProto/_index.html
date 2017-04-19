@@ -1,5 +1,7 @@
 test angular device manager
 <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.js'></script>
+
+<script src='device/DetectRTC.js'></script>
 <div ng-app='testMain' ng-controller="testdeviceControllerCtrl"></div>
 <script>
     // Init angular modules here
@@ -87,19 +89,19 @@ test angular device manager
                             console.log(dev.getDeviceState());
 
                             // Set state to BLOCKED
-                            dev.blockDeviceState(
-                                ['Firewall', 'PermissionsNotGiven', 'InOtherAppUse'] // Set some blocked states
-                            );
-                            console.log(dev.getDeviceState());
-                            console.log('is this device blocked :: ' + dev.isDeviceBlocked());
-                            console.log('device blocked states :: ');
-                            console.log(dev.getBlockedStates());
-                            // Set state to UNBLOCKED
-                            dev.unblockDeviceState();
-                            console.log(dev.getDeviceState());
-                            console.log('is this device blocked :: ' + dev.isDeviceBlocked());
-                            console.log('device blocked states :: ');
-                            console.log(dev.getBlockedStates());
+                            // dev.blockDeviceState(
+                            //     ['Firewall', 'PermissionsNotGiven', 'InOtherAppUse'] // Set some blocked states
+                            // );
+                            // console.log(dev.getDeviceState());
+                            // console.log('is this device blocked :: ' + dev.isDeviceBlocked());
+                            // console.log('device blocked states :: ');
+                            // console.log(dev.getBlockedStates());
+                            // // Set state to UNBLOCKED
+                            // dev.unblockDeviceState();
+                            // console.log(dev.getDeviceState());
+                            // console.log('is this device blocked :: ' + dev.isDeviceBlocked());
+                            // console.log('device blocked states :: ');
+                            // console.log(dev.getBlockedStates());
                         }
 
                         testDevice(device);                        
@@ -109,6 +111,13 @@ test angular device manager
             .controller('testdeviceControllerCtrl',[
                 'DeviceController',
                 function (DeviceController) {
+                    var mediaSources = { 
+                        'audioInput' : DetectRTC.audioInputDevices,
+                        'audioOutput': DetectRTC.audioOutputDevices,
+                        'videoInput' : DetectRTC.videoInputDevices
+                    };
+                    
+                    console.log(mediaSources);
                     var testData = [{
                             "deviceId": "default",
                             "label": "Default",
@@ -132,17 +141,20 @@ test angular device manager
                         }];
 
                     function testDeviceController(deviceList) {
-                        var deviceController = new DeviceController();
-                        // Load devices into controller
-                        deviceController.loadDevices(deviceList);
-                        deviceController.setFirstSelectedDevices();
-                        // Choose vid device
+                        var c = new DeviceController();
+                        // // Load devices into controller
+                        // deviceController.loadDevices(deviceList);
+                        // deviceController.setFirstSelectedDevices();
+                        // // Choose vid device
                         // deviceController.selectVideoDevice(deviceList);
-                        // Get selected vid device
+                        // // Get selected vid device
                         
-                        // Choose aud device
+                        // // Choose aud device
 
-                        // Get selected aud device
+                        // // Get selected aud device
+                        
+                        // // Set Flags here
+                        setBlockedState.setBlockedState();
                     }
 
                     testDeviceController(testData);

@@ -32,7 +32,8 @@
                 // Internal command argument 
                 const ARGS = {
                     concat : 0,
-                    match_one : 1
+                    match_one : 1,
+                    concat_no_null : 2
                 }
 
                 /*********************
@@ -62,10 +63,16 @@
                         keys = Object.keys(properties.data);
                         // Iterate dictionary data till find key
                         for (i = 0; i < keys.length; i++) {
-                            // Give current element, Elements List, index to CB
+                            // Give [current key element, key Elements List, index numerator, dictionary data access] to CB
                             switch (args) {
                                 case ARGS.concat:
                                     resultList.push(cb(keys[i], keys, i));
+                                    break;
+
+                            case ARGS.concat_no_null:
+                                    var value = cb(keys[i], keys, i, properties.data)
+                                    if (value != null)
+                                        resultList.push(value);
                                     break;
 
                                 case ARGS.match_one:
@@ -98,7 +105,7 @@
                 /**
                  * @function getKeyByValue
                  * @description gets a key by the value within the dictionary
-                 *              
+                 * @param {*} value             
                  * @return key associated with the value in the dictionary
                  *         collection, if not found then return null
                  */
@@ -114,6 +121,24 @@
                     };
                     var returnKey = _searchDictionary(cb, args);
                     return returnKey;
+                };
+
+                /**
+                 * @function getKeyListByValue
+                 * @description gets a key by the value within the dictionary
+                 * @param {*} value     
+                 * @return key list associated with the value in the dictionary
+                 *         collection, if not found then return null
+                 */
+                dict.getKeyListByValue = function (value) {
+                    var values = [];
+                    var args = ARGS.concat_no_null;
+                    var cb = function (currentItem, Items, index, dict) {
+                        if (dict[currentItem] === value)
+                            return currentItem;
+                    };
+                    values = _searchDictionary(cb, args);
+                    return values;
                 };
 
                 /**
@@ -183,7 +208,7 @@
                  */
                 dict.setValue = function(key, value) {
                     properties.data[key] = value;
-                }
+                };
 
                 /**
                  * @function add
@@ -192,8 +217,21 @@
                  */
                 dict.add = function(key, value) {
                     properties.data[key] = value;
-                }
+                };
 
+                /**
+                 * @function isKeyExists
+                 * @param {string} key
+                 * @param {*} value
+                 * @return {Bool} isExists
+                 */
+                dict.isKeyExists = function(key) {
+                    var isExists = false;
+                    if (properties.data[key]) {
+                        isExists = true;
+                    }
+                    return isExists;
+                };
 
                 return dict;
             };
