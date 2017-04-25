@@ -117,22 +117,60 @@ test angular device manager
                         mediaSources : {}
                     };
 
-                    // Testing DetectRTC
-                    DetectRTC.load(function() {
-                        self.mediaSources = {
-                            'videoPermissions' :  DetectRTC.isWebsiteHasWebcamPermissions,
-                            'audioPermissions' :  DetectRTC.isWebsiteHasMicrophonePermissions,
-                            'audioInput' : DetectRTC.audioInputDevices,
-                            'audioOutput': DetectRTC.audioOutputDevices,
-                            'videoInput' : DetectRTC.videoInputDevices
-                        };
-                        // log media sources
-                        console.log(self.mediaSources);
-                    });
+                    // // Testing DetectRTC
+                    // DetectRTC.load(function() {
+                    //     self.mediaSources = {
+                    //         'videoPermissions' :  DetectRTC.isWebsiteHasWebcamPermissions,
+                    //         'audioPermissions' :  DetectRTC.isWebsiteHasMicrophonePermissions,
+                    //         'audioInput' : DetectRTC.audioInputDevices,
+                    //         'audioOutput': DetectRTC.audioOutputDevices,
+                    //         'videoInput' : DetectRTC.videoInputDevices
+                    //     };
+                    //     // log media sources
+                    //     console.log(self.mediaSources);
+                    // });
+
+                    // get device media script
+                    navigator.getUserMedia = navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia || 
+                        (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) ||
+                        OTPlugin.isInstalled();
+
+                    if (typeof navigator !== 'undefined') {
+                        // Request
+                        if (navigator.getUserMedia) {
+                            // Get Video input
+                            navigator.getUserMedia({ video: true },
+                                function(success) {
+                                    console.log(success);
+                                    selectAudio();
+                                },
+                                function(err) {
+                                    console.log(err);
+                                }
+                            );
+
+                            // Get Audio input
+                            navigator.getUserMedia({ audio: true },
+                                function(success) {
+                                    console.log(success);
+                                },
+                                function(err) {
+                                    console.log(err);
+                                }
+                            );}
+
+                            function selectAudio() {
+                                if (navigator.getUserMedia) {
+
+                                }
+                            }
+                        }
+
+
+                    
 
                      
- 
-
                     
                     var testData = [{
                             "deviceId": "default",
