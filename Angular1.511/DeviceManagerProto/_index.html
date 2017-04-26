@@ -2,7 +2,9 @@ test angular device manager
 <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.js'></script>
 <!--testing out a webrtc service handler project script bellow-->
 <script src='device/DetectRTC.js'></script>
-<div ng-app='testMain' ng-controller="testdeviceControllerCtrl"></div>
+<!--self contained angular module-->
+<script src='class-build-helpers/event-sequence.controller.js'></script>
+<div ng-app='testMain' ng-controller="EventTestController"></div>
 <script>
     // Init angular modules here
     angular.module('system.classes', []);
@@ -10,7 +12,8 @@ test angular device manager
     angular.module('testMain', [
         'system.classes',
         'system.device',
-        'DetectRTC'
+        'DetectRTC',
+        'system.events'
         ])
         
         .controller('testDictionaryCtrl', [
@@ -222,7 +225,33 @@ test angular device manager
 
                     testDeviceController(testData);
                 }
-            ]); 
+            ])        
+            
+            .controller('EventTestController', [
+                    'EventController', 
+                    function(EventController) {
+                        // Run Device Tests here
+                        var testEventData = {
+                            id : 'myTestEvent',
+                            cb : function () { 
+                                console.log('This is a cb func'); 
+                                return true;
+                            },
+                            retries : 3
+                        };
+                        
+                        console.log('creating new eventcontroller');
+                        var eventController = new EventController();
+                        console.log('creating new event');
+                        eventController.addBlockingEvent(testEventData.id, testEventData.cb, testEventData.retries);
+                        eventController.addBlockingEvent('0', testEventData.cb, testEventData.retries);
+                        eventController.addBlockingEvent('1', testEventData.cb, testEventData.retries);
+                        eventController.addBlockingEvent('2', testEventData.cb, testEventData.retries);
+                        console.log(eventController.getEventQueue());
+                        eventController.processEvent('1');
+                        
+                    }
+                ]); 
     
     // angular.module('system.initialization', []);
     // Playground
@@ -237,6 +266,7 @@ test angular device manager
 
 <!--<script src='initialisation/browser-config.service.js'></script>-->
 <script src='class-build-helpers/dictionary.class.js'></script>
+
 <!--include objects-->
 <script src='device/device.constants.js'></script>
 <script src='device/device.class.js'></script>
